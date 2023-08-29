@@ -10,33 +10,7 @@
         tipo: '',
         mensaje: ''
     })
-    const loguearUsuario =()=>{        
-        axios.post('https://cherry-api-test.onrender.com/api/users/login',{
-            // email: userValidate.email,
-            // password:  userValidate.password
-        
-            email:userValidate.email,
-            password:userValidate.password
-            
-        }).then(respuesta =>{
-            alerta.mensaje = respuesta.data.msg
-            alerta.tipo = 'exito'
-            console.log(respuesta.data.msg)
-            console.log(respuesta)
-        }).catch(error =>{
-            alerta.mensaje = error.response.data.msg
-            alerta.tipo = 'error'
-            console.log( error.response.data.msg)
-            console.log(error)
-        })
-        setTimeout(() => {
-            Object.assign(alerta, {
-                tipo: '',
-                mensaje: ''
-            })
-        }, 4000)  
 
-    }
 </script>
 <template>
     <div class="mx-auto my-10 max-w-2xl bg-red-300 rounded-3xl ">

@@ -1,57 +1,29 @@
 <script setup>
     import Alerta from './Alerta.vue'
-    import axios from "axios";
-    import {ref,reactive} from 'vue'
-    const userValidate = reactive({
-        name:'',
-        email:'',
-        state:'Activo',
-        phone:'',
-        password:'',
-        rol:''
+    const props = defineProps({
+        userValidate:{
+            type:Object,
+            required:true
+        },
+        alerta:{
+            type:Object,
+            required:true
+        }
     })
-    const alerta = reactive({
-        tipo: '',
-        mensaje: ''
-    })
-    // const userValidate = reactive({})
-    const registarUsuario =()=>{        
-        axios.post('https://cherry-api-test.onrender.com/api/users/register',{
-            // email: userValidate.email,
-            // password:  userValidate.password
-            name:userValidate.name,
-            email:userValidate.email,
-            state:'Activo',
-            phone:userValidate.phone,
-            password:userValidate.password,
-            rol:userValidate.rol
-            
-        }).then(respuesta =>{
-            alerta.mensaje = respuesta.data.msg
-            alerta.tipo = 'exito'
-            console.log(respuesta.data.msg)
-            console.log(respuesta)
-        }).catch(error =>{
-            alerta.mensaje = error.response.data.msg
-            alerta.tipo = 'error'
-            console.log(error.response.data.msg)
-            console.log(error)
-        })
-        setTimeout(() => {
-            Object.assign(alerta, {
-                tipo: '',
-                mensaje: ''
-            })
-        }, 4000)  
-    }
-    
+
+    defineEmits('registrarUsuario')
+
 </script>
 <template>
     <div class="mx-auto my-10 max-w-2xl bg-red-300 rounded-3xl ">
         <div class="p-10">
             <img class="w-32  mx-auto" src="../assets/img/Cherry_icon.png" alt="" srcset="">
             <h1 class="text-3xl text-center font-bold"><span class=" text-red-600">Cherry Stock</span> - Registro</h1>
-            <form @submit.prevent="registarUsuario"
+            <Alerta
+            v-if="alerta.mensaje"
+            :alerta="alerta"
+            />
+            <form @submit.prevent="$emit('registarUsuario')"
             class="flex flex-col px-5 mt-5 " method="post">
 
                 <label class="uppercase text-2xl font-semibold mt-5 " for="">Nombre</label>
@@ -88,10 +60,7 @@
                 <input 
                 class="w-full p-3 mt-6 rounded-md bg-green-800 hover:bg-green-700 cursor-pointer text-white" type="submit" value="Registrar">
             </form>
-            <Alerta
-            v-if="alerta.mensaje"
-            :alerta="alerta"
-            />
+           
         </div>
     </div>
 </template>
